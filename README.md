@@ -35,7 +35,9 @@ B.
 
      \# sh /root/StartX
 
-  2. One can start new window for the merged ( but not chrooted ) system in the already presented Xorg by Xephyr_chroot script .
+  2. In the already presented Xorg , 
+     one can start new window for the merged ( but not chrooted ) system 
+     by Xephyr_chroot script .
 
 C.
 
