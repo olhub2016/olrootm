@@ -89,15 +89,11 @@ The {overlayfs,unlonfs} exploiting root merge bash scripts for the {BSD,linux} d
      edit /etc/mkinitcpio.d/linux.preset file like that :
      
         ## Change PRESETS line
-      
-          PRESETS=('default' 'fallback' 'overlay')
+           PRESETS=('default' 'fallback' 'overlay')
        
         ## Add these lines to the file
-       
           #overlay_config="/etc/mkinitcpio.conf"
-       
           overlay_image="/boot/initramfs-linux-overlay-fallback.img"
-       
           overlay_options="-A overlay_root -S autodetect"
 
    3. Set up new items in the bootloader conf file
