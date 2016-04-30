@@ -45,7 +45,7 @@ C.
   doesn't alter in any way the BASE ROOT
   and leaves all the changes in the OVERLAY ROOT PARTITION .
 
- The scripts "Make_Base(Overlay)_SFS_Snapshot" create Squashfs ball out of the pkgs+home+root carring dirs
+ The scripts \"Make_Base(Overlay)_SFS_Snapshot' create Squashfs ball out of the pkgs+home+root carring dirs
   of the BASE(OVERLAY) ROOT
   and the "SFS_[Base+Overlay]Overlay_Merge_UMerge" scripts  merge OVERLAY SFS ball
   with the BASE ROOT SFS ball or BASE ROOT correspondingly by unionfs-fuse
@@ -64,15 +64,17 @@ D.
 
       $ sudo mkdir /PATH_TO/OVERLAY_ROOT/Base_Mount
 
-   2. Make proper initramfs
+   2. Make proper initramfs .
 
       Edit initcpio_hooks_overlay_root file in respect of the partitions layout and OVERLAY ROOT you want to merge with .
        $ nano /PATH_TO/Overlay_Hooks/initcpio_hooks_overlay_root
-
-      $ sudo cp /PATH_TO/Overlay_Hooks/initcpio_install_overlay_root /usr/lib/initcpio/install/overlay_root
-      $ sudo cp /PATH_TO/Overlay_Hooks/sinitcpio_hooks_overlay_root /usr/lib/initcpio/hooks/overlay_root
+       
+       $ sudo cp /PATH_TO/Overlay_Hooks/initcpio_install_overlay_root /usr/lib/initcpio/install/overlay_root
+       
+       $ sudo cp /PATH_TO/Overlay_Hooks/sinitcpio_hooks_overlay_root /usr/lib/initcpio/hooks/overlay_root
 
        $ sudo cp /etc/mkinitcpio.conf /etc/mkinitcpio-overlay-fallback.conf
+       
       Edit "MODULES=" line in the conf file : add "overlay" .
       Edit "HOOKS=" line in the conf file : add "overlay_root" , remove "autodetect" .
        $ sudo nano  /etc/mkinitcpio-overlay-fallback.conf
