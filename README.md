@@ -32,8 +32,8 @@ B.
      $ sudo cp /PATH_TO/xinitrc /PATH_TO/OVERLAY_ROOT/Over_root/.xinitrc
 
    Having merged AND chrooted in the other linux tty shell , start new Xorg with the command
-
-     \# sh /root/StartX
+   
+    \# sh /root/StartX
 
   2. In the already presented Xorg , 
      one can start new window for the merged ( but not chrooted ) system 
