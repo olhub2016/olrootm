@@ -42,7 +42,7 @@ The {overlayfs,unlonfs} exploiting root merge bash scripts for the {BSD,Linux} d
 
 #C.
 
- The session in the merged system , despite nominally of the root user kind ,
+ The session in the merged system , despite nominally of the root user kind ,  
   doesn't alter in any way the BASE ROOT
   and leaves all the changes in the OVERLAY ROOT PARTITION .
 
