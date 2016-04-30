@@ -67,7 +67,6 @@ D.
    2. Make proper initramfs .
 
       Edit initcpio_hooks_overlay_root file in respect of the partitions layout and OVERLAY ROOT you want to merge with .
-      
        $ nano /PATH_TO/Overlay_Hooks/initcpio_hooks_overlay_root
        
        $ sudo cp /PATH_TO/Overlay_Hooks/initcpio_install_overlay_root /usr/lib/initcpio/install/overlay_root
