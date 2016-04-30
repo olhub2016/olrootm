@@ -56,7 +56,7 @@ The {overlayfs,unlonfs} exploiting root merge bash scripts for the {BSD,Linux} d
  
 #D.
 
- When some OVERLAY ROOT is set in the OVERLAY PARTITION immediately ( without any enclosing dir ) ,  
+ When some OVERLAY ROOT is set in the OVERLAY ROOT PARTITION immediately ( without any enclosing dir ) ,  
  one can BOOT into the system merged with ANY OVERLAY ROOT .
   
   In Archlinux , being within BASE System ,
