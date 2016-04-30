@@ -94,7 +94,7 @@ The {overlayfs,unlonfs} exploiting root merge bash scripts for the {BSD,linux} d
        
         ## Add these lines to the file
        
-          \#overlay_config="/etc/mkinitcpio.conf"
+          #overlay_config="/etc/mkinitcpio.conf"
        
            overlay_image="/boot/initramfs-linux-overlay-fallback.img"
        
