@@ -73,7 +73,7 @@ The {overlayfs,unlonfs} exploiting root merge bash scripts for the {BSD,Linux} d
        
         $ sudo cp /PATH_TO/initcpio_install_overlay_root /usr/lib/initcpio/install/overlay_root
        
-        $ sudo cp /PATH_TO/sinitcpio_hooks_overlay_root /usr/lib/initcpio/hooks/overlay_root
+        $ sudo cp /PATH_TO/initcpio_hooks_overlay_root /usr/lib/initcpio/hooks/overlay_root
        
         $ sudo cp /etc/mkinitcpio.conf /etc/mkinitcpio-overlay-fallback.conf
        
