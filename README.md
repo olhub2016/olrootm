@@ -19,7 +19,7 @@ The {overlayfs,unlonfs} exploiting root merge bash scripts for the {BSD,linux} d
  The initial setup of the OVERLAY ROOT is fullfilled 
   by the Overlay_Build_Merge_UMerge Script ( option "Build" ) .
 
-B.
+#B.
 
  There are two opportunities for the session in the merged system as to Xorg :
 
@@ -39,7 +39,7 @@ B.
      one can start new window for the merged ( but not chrooted ) system 
      by Xephyr_chroot script .
 
-C.
+#C.
 
  The session in the merged system , despite nominally of the root user kind ,
   doesn't alter in any way the BASE ROOT
@@ -53,7 +53,7 @@ C.
   Only the maiden /root and /tmp directories preserved in the RAM /dev/shm/Mount_SFS_Overlay dir
   are writable in this case .
  
-D.
+#D.
 
  When some OVERLAY ROOT is set in the OVERLAY PARTITION immediately ( without any enclosing dir ) ,
   one can BOOT into the system merged with ANY OVERLAY ROOT .
