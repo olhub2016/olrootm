@@ -32,7 +32,7 @@ B.
 
    Having merged AND chrooted in the other linux tty shell , start new Xorg with the command
 
-    # sh /root/StartX
+    \# sh /root/StartX
 
   2. One can start new window for the merged ( but not chrooted ) system in the already presented Xorg by Xephyr_chroot script .
 
