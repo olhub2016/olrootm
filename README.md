@@ -45,7 +45,8 @@ C.
   doesn't alter in any way the BASE ROOT
   and leaves all the changes in the OVERLAY ROOT PARTITION .
 
- The scripts "Make_Base[Overlay]_SFS_Snapshot" create Squashfs ball out of the pkgs+home+root carring dirs of the BASE[OVERLAY] ROOT
+ The scripts "Make_Base(Overlay)_SFS_Snapshot" create Squashfs ball out of the pkgs+home+root carring dirs
+  of the BASE(OVERLAY) ROOT
   and the "SFS_[Base+Overlay]Overlay_Merge_UMerge" scripts  merge OVERLAY SFS ball
   with the BASE ROOT SFS ball or BASE ROOT correspondingly by unionfs-fuse
   although with the somehow restricted functioning .
