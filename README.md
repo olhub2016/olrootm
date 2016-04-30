@@ -69,11 +69,11 @@ The {overlayfs,unlonfs} exploiting root merge bash scripts for the {BSD,linux} d
 
       Edit initcpio_hooks_overlay_root file in respect of the partitions layout and OVERLAY ROOT you want to merge with .
       
-        $ nano /PATH_TO/Overlay_Hooks/initcpio_hooks_overlay_root
+        $ nano /PATH_TO/initcpio_hooks_overlay_root
        
-        $ sudo cp /PATH_TO/Overlay_Hooks/initcpio_install_overlay_root /usr/lib/initcpio/install/overlay_root
+        $ sudo cp /PATH_TO/initcpio_install_overlay_root /usr/lib/initcpio/install/overlay_root
        
-        $ sudo cp /PATH_TO/Overlay_Hooks/sinitcpio_hooks_overlay_root /usr/lib/initcpio/hooks/overlay_root
+        $ sudo cp /PATH_TO/sinitcpio_hooks_overlay_root /usr/lib/initcpio/hooks/overlay_root
        
         $ sudo cp /etc/mkinitcpio.conf /etc/mkinitcpio-overlay-fallback.conf
        
