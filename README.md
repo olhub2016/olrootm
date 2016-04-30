@@ -25,7 +25,7 @@ B.
 
   1. One can start new Xorg instance from the other linux tty .
 
-   In the BASE system session , copy Startx+xinitrc into the /Over_root dir of the OVERLAY ROOT .
+   From the BASE system session , copy Startx+xinitrc into the /Over_root dir of the OVERLAY ROOT .
    
      $ sudo cp /PATH_TO/StartX /PATH_TO/OVERLAY_ROOT/Over_root
     
