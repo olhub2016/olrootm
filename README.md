@@ -5,11 +5,12 @@ The {overlayfs,unlonfs} exploiting root merge bash scripts for the {BSD,linux} d
 
  This bash script suit is bound to build and sustain the system  
    subdivided into two parts ( BASE+OVERLAY ) in the terms of time and(or) packages  
-   and put in two different partitions .
+   and put in two different partitions .  
 
- The first part ( BASE ROOT ) functions independently .
-
- The second one ( OVERLAY ROOT ) is placed at the OVERLAY ROOT PARTITION ( immediately or inside its own dir )
+ The first part ( BASE ROOT ) functions independently .  
+   
+ The second one ( OVERLAY ROOT ) is placed at the OVERLAY ROOT PARTITION  
+  ( immediately or inside its own dir )  
   and merged under the choice through overlayfs or unionfs-fuse during the session .
 
  The install or upgrade of the kernel is to be ALWAYS fullfilled from the BASE ROOT system session .
@@ -106,7 +107,7 @@ The {overlayfs,unlonfs} exploiting root merge bash scripts for the {BSD,linux} d
 
    5. Edit overlay_etc_fstab file and copy it in the OVERLAY ROOT PARTITION and OVERLAY ROOTs . 
      
-         $ nano /PATH_TO/overlay_etc_fstab
+        $ nano /PATH_TO/overlay_etc_fstab
      
         $ sudo cp /PATH_TO/overlay_etc_fstab  /PATH_TO/OVERLAY_ROOT_PARTITION/etc/fstab  
         $ sudo cp /PATH_TO/overlay_etc_fstab  /PATH_TO/OVERLAY_ROOT_PARTITION/OVERLAY_ROOT/OVER_etc/fstab
