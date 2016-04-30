@@ -24,7 +24,7 @@ The {overlayfs,unlonfs} exploiting root merge bash scripts for the {BSD,Linux} d
 
  There are two opportunities for the session in the merged system as to Xorg  :
 
-  1. One can start new Xorg instance from the other linux tty .
+  1. One can start new Xorg instance from the other linux tty .  
 
    From the BASE system session , copy Startx+xinitrc into the /Over_root dir of the OVERLAY ROOT  
      
