@@ -87,11 +87,11 @@ The {overlayfs,unlonfs} exploiting root merge bash scripts for the {BSD,linux} d
      To regenerate initramfs-linux-overlay-fallback.img every time upgrading linux kernel
      edit /etc/mkinitcpio.d/linux.preset fil like that :
      
-        \## Change PRESETS line
+        ## Change PRESETS line
       
           PRESETS=('default' 'fallback' 'overlay')
        
-          \## Add these lines to the file
+        ## Add these lines to the file
        
           \#overlay_config="/etc/mkinitcpio.conf"
        
