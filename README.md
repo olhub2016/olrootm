@@ -96,9 +96,9 @@ The {overlayfs,unlonfs} exploiting root merge bash scripts for the {BSD,linux} d
        
           #overlay_config="/etc/mkinitcpio.conf"
        
-           overlay_image="/boot/initramfs-linux-overlay-fallback.img"
+          overlay_image="/boot/initramfs-linux-overlay-fallback.img"
        
-           overlay_options="-A overlay_root -S autodetect"
+          overlay_options="-A overlay_root -S autodetect"
 
    3. Set up new items in the bootloader conf file
        pointing at the initramfs-linux-overlay-fallback.img and OVERLAY ROOT PARTITION as a root .
