@@ -108,7 +108,7 @@ ROOT merge bash scripts for the {BSD,Linux} dists .
         $ nano /PATH_TO/overlay_etc_fstab
      
         $ sudo cp /PATH_TO/overlay_etc_fstab  /PATH_TO/OVERLAY_ROOT_PARTITION/etc/fstab  
-        $ sudo cp /PATH_TO/overlay_etc_fstab  /PATH_TO/OVERLAY_ROOT_PARTITION/OVERLAY_ROOT/OVER_etc/fstab
+        $ sudo cp /PATH_TO/overlay_etc_fstab  /PATH_TO/OVERLAY_ROOT_PARTITION/OVERLAY_ROOT/Over_etc/fstab
 
    6. Reboot .
 
