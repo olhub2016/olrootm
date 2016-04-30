@@ -37,7 +37,7 @@ The {overlayfs,unlonfs} exploiting root merge bash scripts for the {BSD,Linux} d
          #  sh /root/StartX
 
   2. In the already presented Xorg , 
-     one can start new window for the merged ( but not chrooted ) system 
+     one can start new window for the merged ( but not chrooted ) system  
      by Xephyr_chroot script .
 
 #C.
