@@ -96,7 +96,7 @@ The {overlayfs,unlonfs} exploiting root merge bash scripts for the {BSD,Linux} d
            overlay_image="/boot/initramfs-linux-overlay-fallback.img"
            overlay_options="-A overlay_root -S autodetect"
 
-   3. Set up new items in the bootloader conf file
+   3. Set up new item in the bootloader conf file
        pointing at the initramfs-linux-overlay-fallback.img  
        and OVERLAY ROOT PARTITION as a root .
 
