@@ -4,25 +4,25 @@ The {overlayfs,unlonfs} exploiting root merge bash scripts for the {BSD,Linux} d
 #A.
 
  This bash script suit is bound to build and sustain the system  
-   subdivided into two parts ( BASE+OVERLAY ) in the terms of time and(or) packages  
-   and put in two different partitions .  
+ subdivided into two parts ( BASE+OVERLAY ) in the terms of time and(or) packages  
+ and put in two different partitions .  
 
  The first part ( BASE ROOT ) functions independently .  
-   
+ 
  The second one ( OVERLAY ROOT ) is placed at the OVERLAY ROOT PARTITION  
-  ( immediately or inside its own dir )  
-  and merged under the choice through overlayfs or unionfs-fuse during the session .
+ ( immediately or inside its own dir )  
+ and merged under the choice through overlayfs or unionfs-fuse during the session .
 
  The install or upgrade of the kernel is to be ALWAYS fullfilled from the BASE ROOT system session .
 
  The scripts are potentially dist independent .
  
  The initial setup of the OVERLAY ROOT is fullfilled 
-  by the Overlay_Build_Merge_UMerge Script ( option "Build" ) .
+ by the Overlay_Build_Merge_UMerge Script ( option "Build" ) .
 
 #B.
 
- There are two opportunities for the session in the merged system as to Xorg  :
+ There are two opportunities for the session in the merged system as to Xorg  :  
 
   1. One can start new Xorg instance from the other linux tty .  
 
@@ -43,21 +43,21 @@ The {overlayfs,unlonfs} exploiting root merge bash scripts for the {BSD,Linux} d
 #C.
 
  The session in the merged system , despite nominally of the root user kind ,  
-  doesn't alter in any way the BASE ROOT  
-  and leaves all the changes in the OVERLAY ROOT PARTITION .
+ doesn't alter in any way the BASE ROOT  
+ and leaves all the changes in the OVERLAY ROOT PARTITION .
 
  The scripts "Make_Base...Overlay_SFS_Snapshot" create Squashfs ball  
  out of the pkgs+home+root carring dirs  of the BASE(OVERLAY) ROOT  
-  and the "SFS_Base+Overlay...Overlay_Merge_UMerge" scripts  merge OVERLAY SFS ball  
-  with the BASE ROOT SFS ball or BASE ROOT correspondingly by unionfs-fuse  
-  although with the somehow restricted functioning .  
-  Only the maiden /root and /tmp directories preserved in the RAM /dev/shm/Mount_SFS_Overlay dir  
-  are writable in this case .
+ and the "SFS_Base+Overlay...Overlay_Merge_UMerge" scripts  merge OVERLAY SFS ball  
+ with the BASE ROOT SFS ball or BASE ROOT correspondingly by unionfs-fuse  
+ although with the somehow restricted functioning .  
+ Only the maiden /root and /tmp directories preserved in the RAM /dev/shm/Mount_SFS_Overlay dir  
+ are writable in this case .
  
 #D.
 
  When some OVERLAY ROOT is set in the OVERLAY PARTITION immediately ( without any enclosing dir ) ,  
-  one can BOOT into the system merged with ANY OVERLAY ROOT .
+ one can BOOT into the system merged with ANY OVERLAY ROOT .
   
   In Archlinux , being within BASE System ,
 
