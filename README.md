@@ -3,8 +3,8 @@ The {overlayfs,unlonfs} exploiting root merge bash scripts for the {BSD,linux} d
 
 #A.
 
- This bash script suit is bound to build and sustain the system
-  subdivided into two parts ( BASE+OVERLAY ) in the terms of time and(or) packages
+ This bash script suit is bound to build and sustain the system  
+  subdivided into two parts ( BASE+OVERLAY ) in the terms of time and(or) packages  
   and put in two different partitions .
 
  The first part ( BASE ROOT ) functions independently .
@@ -25,7 +25,7 @@ The {overlayfs,unlonfs} exploiting root merge bash scripts for the {BSD,linux} d
 
   1. One can start new Xorg instance from the other linux tty .
 
-   From the BASE system session , copy Startx+xinitrc into the /Over_root dir of the OVERLAY ROOT
+   From the BASE system session , copy Startx+xinitrc into the /Over_root dir of the OVERLAY ROOT  
    
      $ sudo cp  /PATH_TO/StartX  /PATH_TO/OVERLAY_ROOT/Over_root
      
