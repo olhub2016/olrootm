@@ -27,13 +27,13 @@ The {overlayfs,unlonfs} exploiting root merge bash scripts for the {BSD,linux} d
 
    From the BASE system session , copy Startx+xinitrc into the /Over_root dir of the OVERLAY ROOT :
    
-     $ sudo cp /PATH_TO/StartX /PATH_TO/OVERLAY_ROOT/Over_root
-    
-     $ sudo cp /PATH_TO/xinitrc /PATH_TO/OVERLAY_ROOT/Over_root/.xinitrc
+     $ sudo cp  /PATH_TO/StartX  ?PATH_TO/OVERLAY_ROOT/Over_root
+     
+     $  sudo cp /PATH_TO/xinitrc /PATH_TO/OVERLAY_ROOT/Over_root/.xinitrc
 
    Having merged AND chrooted in the other linux tty shell , start new Xorg with the command :
    
-    \# sh /root/StartX
+    \#  sh /root/StartX
 
   2. In the already presented Xorg , 
      one can start new window for the merged ( but not chrooted ) system 
