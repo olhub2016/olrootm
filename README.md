@@ -1,5 +1,5 @@
 # olrootm
-The {overlayfs,unlonfs} exploiting root merge bash scripts for the {BSD,linux} dists .
+The {overlayfs,unlonfs} exploiting root merge bash scripts for the {BSD,Linux} dists .
 
 #A.
 
@@ -22,19 +22,19 @@ The {overlayfs,unlonfs} exploiting root merge bash scripts for the {BSD,linux} d
 
 #B.
 
- There are two opportunities for the session in the merged system as to Xorg :
+ There are two opportunities for the session in the merged system as to Xorg  :
 
   1. One can start new Xorg instance from the other linux tty .
 
-   From the BASE system session , copy Startx+xinitrc into the /Over_root dir of the OVERLAY ROOT    
+   From the BASE system session , copy Startx+xinitrc into the /Over_root dir of the OVERLAY ROOT  
      
-       $ sudo cp  /PATH_TO/StartX  /PATH_TO/OVERLAY_ROOT/Over_root
+         $ sudo cp  /PATH_TO/StartX  /PATH_TO/OVERLAY_ROOT/Over_root
      
-       $  sudo cp /PATH_TO/xinitrc /PATH_TO/OVERLAY_ROOT/Over_root/.xinitrc
+         $  sudo cp /PATH_TO/xinitrc /PATH_TO/OVERLAY_ROOT/Over_root/.xinitrc
 
    Having merged AND chrooted in the other linux tty shell , start new Xorg with the command :
-   
-    \#  sh /root/StartX
+     
+         \#  sh /root/StartX
 
   2. In the already presented Xorg , 
      one can start new window for the merged ( but not chrooted ) system 
