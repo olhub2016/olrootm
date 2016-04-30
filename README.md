@@ -67,6 +67,7 @@ D.
    2. Make proper initramfs .
 
       Edit initcpio_hooks_overlay_root file in respect of the partitions layout and OVERLAY ROOT you want to merge with .
+      
        $ nano /PATH_TO/Overlay_Hooks/initcpio_hooks_overlay_root
        
        $ sudo cp /PATH_TO/Overlay_Hooks/initcpio_install_overlay_root /usr/lib/initcpio/install/overlay_root
@@ -75,14 +76,17 @@ D.
 
        $ sudo cp /etc/mkinitcpio.conf /etc/mkinitcpio-overlay-fallback.conf
        
-      Edit "MODULES=" line in the conf file : add "overlay" .
-      Edit "HOOKS=" line in the conf file : add "overlay_root" , remove "autodetect" .
+       Edit "MODULES=" line in the conf file : add "overlay" .
+       
+       Edit "HOOKS=" line in the conf file : add "overlay_root" , remove "autodetect" .
+       
        $ sudo nano  /etc/mkinitcpio-overlay-fallback.conf
  
       $ sudo mkinitcpio -c /etc/mkinitcpio-overlay-fallback.conf -g /boot/initramfs-linux-overlay-fallback.img
 
      To regenerate initramfs-linux-overlay-fallback.img every time upgrading linux kernel
       edit /etc/mkinitcpio.d/linux.preset file like that :
+      
        ## Change PRESETS line
        PRESETS=('default' 'fallback' 'overlay')
        ## Add these lines to the file
