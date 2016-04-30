@@ -97,7 +97,8 @@ The {overlayfs,unlonfs} exploiting root merge bash scripts for the {BSD,Linux} d
            overlay_options="-A overlay_root -S autodetect"
 
    3. Set up new items in the bootloader conf file
-       pointing at the initramfs-linux-overlay-fallback.img and OVERLAY ROOT PARTITION as a root .
+       pointing at the initramfs-linux-overlay-fallback.img  
+       and OVERLAY ROOT PARTITION as a root .
 
    4. Repeat p. 2,3 for every OVERLAY ROOT renaming and editing files coherently .
 
