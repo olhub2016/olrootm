@@ -1,0 +1,148 @@
+#!/bin/bash
+
+if [[ $(whoami) != "root" ]]
+ then
+  echo
+  echo "This script is to be started WITH SUDO or in the ROOT SHELL"
+  echo
+  exit
+fi
+
+_i1="/dev/shm/Mount_SFS_Overlay"
+
+_g1="/dev/shm/SFS_Overlay_Ball"
+
+echo
+PS3="Please Choose OPERATION Type  ;  1, 2  :  "
+select _opt in Merge UMerge ; do
+ if [[ -n $_opt ]]
+  then
+   _tp1=$_opt
+   echo "OPERATION is of $_opt Type"
+   echo
+   break
+  else
+   echo 'Wrong Choice'
+   echo
+ fi
+done
+
+
+
+case $_tp1 in
+ UMerge)
+  umount --recursive "$_i1"
+  umount "$_g1"
+  echo
+  exit  ;;
+ Merge)
+  echo
+  echo ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
+  echo
+  echo "MIRROR ROOT MAKE in "$_i1""
+  echo
+
+  if [[ ! -a "$_i1" ]]
+   then
+    mkdir "$_i1"
+  fi
+  
+  for _n in /*
+   do
+    _l="$(file "$_n")"
+    if [[ "${_l#*directory}" != "$_l" ]]
+     then
+      mkdir "$_i1"/"$_n"
+    fi
+  done
+
+  for _n in /*
+   do
+    _l="$(file "$_n")"
+    if [[ "${_l#*symbolic link to }" != "$_l" ]]
+     then
+      _l="${_l##*symbolic link to }"
+      _fl="${_l:0:1}"
+      if [[ "$_fl" == "/" ]]
+       then
+        _l="${_l#/}"
+      fi
+      cd "$_i1"
+      ln -s "$_l" "${_n#/}"
+      cd - &> /dev/null
+    fi
+  done
+  
+  rm -r "$_i1"/Mount*
+  
+  echo
+  read -p "Please Enter OVERLAY SFS Path ( Press Tabs to complete )   :   " -i "/" -e _ovsfsp1
+  echo
+
+  if [[ ! -a "$_g1" ]]
+   then
+    mkdir "$_g1"
+  fi
+  mount "$_ovsfsp1" "$_g1" && echo "SFS $_ovsfsp1 is mounted on $_g1"
+  echo
+
+  for _b in "$_i1"/*
+   do
+    _b1="${_b##*/}"
+     _l="$(file "$_b")"
+     if [[ "${_l#*directory}" != "$_l" && ! "$_b1" =~ ^(dev|proc|sys|run|root|tmp)$ ]]
+      then
+       unionfs -o cow,max_files=32768 -o allow_other,use_ino,suid,dev,nonempty \
+       ""$_g1"/Over_"$_b1"":"/"$_b1"" "$_b" && \
+       echo "MERGE "$_b" SUCCESS"
+    fi
+  done
+  echo  ;;
+ *)
+  echo
+  exit  ;;
+esac
+
+echo
+echo "--------------------------------------------------------------------------------"
+echo "To probe the MERGED System in the current Xorg sesiion , if presented ,"
+echo " one can come out the script (ctrl+C)"
+echo " and start Xephyr_chroot script as the non-root user ."
+echo "--------------------------------------------------------------------------------"
+echo
+ 
+echo
+read -n 1 -p "Do you want to CHROOT into the MERGED System ?   :   y(es), ...   :   " _ychrt
+
+case $_ychrt in
+ y)
+  mount -t proc proc "$_i1"/proc/
+  mount --rbind /sys "$_i1"/sys/
+  mount --rbind /dev "$_i1"/dev/
+  mount --rbind /run "$_i1"/run/
+  echo
+  chroot "$_i1" /bin/bash && echo && echo "CHROOT EXIT"
+  echo
+  umount --recursive "$_i1"/{dev,proc,run,sys}
+  echo  ;;
+ *)
+  echo  ;;
+esac
+
+echo
+read -n 1 -t 4 -p "Do you want to UMERGE BASE+OVERLAY SFSs ?   :   y(es), ...   :   " _yumo1
+case $_yumo1 in
+ y)
+  umount --recursive "$_i1"
+  umount "$_g1"
+  echo
+  exit  ;;
+ *)
+  echo
+  exit  ;;
+esac
+
+echo
+
+exit
+

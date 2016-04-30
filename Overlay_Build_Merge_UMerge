@@ -1,0 +1,434 @@
+#!/bin/bash
+
+if [[ $(whoami) != "root" ]]
+ then
+  echo
+  echo "This script is to be started WITH SUDO or in the ROOT SHELL"
+  echo
+  exit
+fi
+
+_m1="/Mount_Overlay"
+mkdir "$_m1" &> /dev/null
+
+echo
+PS3="Please Choose OPERATION Type  :  1, 2, 3  :  "
+select _opt in Build Merge UMerge ; do
+ if [[ -n $_opt ]]
+  then
+   _tp1=$_opt
+   echo "OPERATION is of $_opt Type"
+   echo
+   break
+  else
+   echo 'Wrong Choice'
+   echo
+ fi
+done
+
+case $_tp1 in
+ UMerge)
+  echo
+  read -p "Please Enter UMERGED OVERLAY ROOT MOUNTPOINT Dir Path   :   " -i "$_m1/" -e _u1
+  echo
+  read -n 1 -t 4 -p "Do you want to clean OVERLAY ROOT /tmp dir ?   :   y(es), ...   :   " _yclotd
+  echo
+  case $_yclotd in
+   y)
+    rm -r "$_u1"/tmp/*  ;;
+   *)
+    echo  ;;
+  esac
+  echo
+  umount --recursive "$_u1"
+  echo
+  read -n 1 -t 4 -p "Do you to UMOUNT the OVERLAY PARTITION ?   :   y(es), ...   :   " _yuopat
+  echo
+  case $_yuopat in
+   y)
+    umount --recursive "$_m1"  ;;
+   *)
+   echo  ;;
+  esac
+  exit  ;;
+ Merge)
+  echo 
+  echo "----------------------------------------------------------------"
+  echo
+  read -n 1 -t 4 -p "Do you want to UPGRADE BASE ROOT BEFORE MERGE ?   :   y(es), ...   :   " _yubr0
+
+  case $_yubr0 in
+   y)
+    echo
+    read -p "Please Enter the dist upgrade command   :   " _duc0
+    echo
+    eval "$_duc0"  ;;
+   *)
+    echo  ;;
+  esac
+
+  echo 
+  echo "----------------------------------------------------------------"
+  echo
+  blkid
+  echo
+  echo "----------------------------------------------------------------"
+  echo
+  read -p "Please Enter OVERLAY PARTITION Path ( Press Tabs to complete )   :   " -i "/dev/" -e _wp1
+  echo
+
+  _fsid0=$( blkid | grep "$_wp1" | grep 'TYPE="btrfs"')
+  if [[ "$_fsid0" != "" ]]; then _fsid=1; else _fsid=0; fi
+
+  case $_fsid in
+   1)
+    echo
+    PS3="It is BTRFS : Please Choose Conpression Type   :  1, 2, 3  :  "
+    select _opt in lzo zlib no ; do
+     if [[ -n $_opt ]]; then
+      _ff1=$_opt
+      echo "Compression is of $_opt Type"
+      echo
+      break
+     else
+      echo 'Wrong Choice'
+      echo
+     fi
+    done
+    case $_ff1 in
+     no)
+      mount "$_wp1" "$_m1" && echo && echo "Partition "$_wp1" is Mounted on "$_m1""  ;;
+     *)
+      mount -o compress="$_ff1" "$_wp1" "$_m1" && echo && echo "Partition "$_wp1" is Mounted on "$_m1""  ;;
+    esac  ;;
+   *)
+    mount "$_wp1" "$_m1" && echo && echo "Partition "$_wp1" is Mounted on "$_m1""  ;;
+  esac
+
+  echo
+  echo "----------------------------------------------------------------"
+  echo
+  echo "List of the {Dirs,Files} in the OVERLAY PARTITION   :"
+  echo
+  ls "$_m1"
+  echo
+  echo "----------------------------------------------------------------"
+  echo
+  read -p "Please Enter OVERLAY ROOT MOUNTPOINT Dir Path ( Press Tabs to complete )   :   " -i "$_m1/" -e _i1
+  echo
+
+  echo
+  PS3="Please Choose OVERLAY Type  :  1, 2  :  "
+  select _opt in overlayfs unionfs-fuse ; do
+   if [[ -n $_opt ]]
+    then
+     _ot1=$_opt
+     echo "OVERLAY is of $_opt Type"
+     echo
+     break
+    else
+     echo 'Wrong Choice'
+     echo
+   fi
+  done
+
+  case $_ot1 in
+   overlayfs)
+    for _b in /*
+     do
+      _b1=${_b#*/}
+      _l="$(file "$_b")"
+      if [[ "${_l#*directory}" != "$_l" && ! "$_b1" =~ ^(dev|proc|sys|run|"${_m1#*/}")$ ]]
+       then
+        mkdir "$_i1"/"$_b1" &> /dev/null
+        mkdir "$_i1"/Work_"$_b1" &> /dev/null
+        mkdir "$_i1"/Over_"$_b1" &> /dev/null
+        umount "$_i1"/"$_b1" &> /dev/null
+        mount -t overlay overlay -olowerdir="$_b",upperdir=""$_i1"/Over_"$_b1"",workdir=""$_i1"/Work_"$_b1"" "$_i1"/"$_b1" && \
+        echo "MERGE "$_b" SUCCESS"
+      fi
+    done  ;;
+   unionfs-fuse)
+    for _b in /*
+     do
+       _b1=${_b#*/}
+       _l="$(file "$_b")"
+      if [[ "${_l#*directory}" != "$_l" && ! "$_b1" =~ ^(dev|proc|sys|run|"${_m1#*/}")$ ]]
+       then
+        mkdir "$_i1"/"$_b1" &> /dev/null
+        mkdir "$_i1"/Over_"$_b1" &> /dev/null
+        umount "$_i1"/"$_b1" &> /dev/null
+        unionfs -o cow,max_files=32768 -o allow_other,use_ino,suid,dev,nonempty \
+        ""$_i1"/Over_"$_b1""=RW:"$_b"=RO "$_i1"/"$_b" && \
+        echo "MERGE "$_b" SUCCESS"
+      fi
+    done  ;;
+   *)
+    echo  ;;
+  esac
+  
+  echo
+  echo "--------------------------------------------------------------------------------"
+  echo "To probe the MERGED System in the current Xorg session , if presented ,"
+  echo " one can come out the script (ctrl+C)"
+  echo " and start Xephyr_chroot script as the non-root user ."
+  echo "--------------------------------------------------------------------------------"
+  echo  
+
+  echo
+  read -n 1 -p "Do you want to CHROOT into the MERGED System ?   :   y(es), ...   :   " _ychrt
+
+  case $_ychrt in
+   y)
+    cp /etc/resolv.conf "$_i1"/etc/resolv.conf
+    mount -t proc proc "$_i1"/proc/
+    mount --rbind /sys "$_i1"/sys/
+    mount --rbind /dev "$_i1"/dev/
+    mount --rbind /run "$_i1"/run/
+    echo
+    chroot "$_i1" /bin/bash && echo && echo "CHROOT EXIT SUCCESS"
+    echo
+    umount --recursive "$_i1"/{dev,proc,run,sys}
+    echo  ;;
+   *)
+    echo  ;;
+  esac
+
+  echo
+  read -n 1 -t 4 -p "Do you want to UMERGE OVERLAY ROOT Dir ?   :   y(es), ...   :   " _yumo1
+  
+  case $_yumo1 in
+   y)
+    echo
+    read -n 1 -t 4 -p "Do you want to clean OVERLAY ROOT /tmp dir ?   :   y(es), ...   :   " _yclotd0
+    echo
+    case $_yclotd0 in
+     y)
+      rm -r "$_i1"/tmp/*  ;;
+     *)
+     echo  ;;
+    esac
+    umount --recursive "$_i1"
+    echo  ;;
+   *)
+    echo  ;;
+  esac
+
+  echo
+  read -n 1 -t 4 -p "Do you to UMOUNT the OVERLAY PARTITION ?   :   y(es), ...   :   " _yuopat
+  echo
+  case $_yuopat in
+   y)
+    umount --recursive "$_m1"  ;;
+   *)
+   echo  ;;
+  esac
+
+  exit  ;;
+ *)
+  echo  ;;
+esac
+
+##################################################################################################
+
+echo
+echo "----------------------------------------------------------------"
+echo
+echo "OVERLAY ROOT MAKE"
+echo
+echo "----------------------------------------------------------------"
+echo 
+blkid
+echo
+echo "----------------------------------------------------------------"
+echo
+read -p "Please Enter OVERLAY PARTITION Path ( Press Tabs to complete )   :   " -i "/dev/" -e _wp1
+echo
+
+_fsid0=$( blkid | grep "$_wp1" | grep 'TYPE="btrfs"')
+if [[ "$_fsid0" != "" ]]; then _fsid=1; else _fsid=0; fi
+
+case $_fsid in
+ 1)
+  echo
+  PS3="It is BTRFS : Please Choose Conpression Type   :  1, 2, 3  :  "
+  select _opt in lzo zlib no ; do
+   if [[ -n $_opt ]]; then
+    _ff1=$_opt
+    echo "Compression is of $_opt Type"
+    echo
+    break
+   else
+    echo 'Wrong Choice'
+    echo
+   fi
+  done
+  case $_ff1 in
+   no)
+    mount "$_wp1" "$_m1" && echo && echo "Partition "$_wp1" is Mounted on "$_m1""  ;;
+   *)
+    mount -o compress="$_ff1" "$_wp1" "$_m1" && echo && echo "Partition "$_wp1" is Mounted on "$_m1""  ;;
+  esac  ;;
+ *)
+  mount "$_wp1" "$_m1" && echo && echo "Partition "$_wp1" is Mounted on "$_m1""  ;;
+esac
+
+echo
+echo "----------------------------------------------------------------"
+echo
+echo "List of the {Dirs,Files} in the OVERLAY PARTITION   :"
+echo
+ls "$_m1"
+echo
+echo "----------------------------------------------------------------"
+echo
+echo "Please Enter OVERLAY ROOT MOUNTPOINT Dir Path ( Press Tabs to complete )"
+read -p "It will be created , if necessary   :   " -i "$_m1/" -e _i1
+echo
+
+mkdir "$_i1" &> /dev/null
+
+for _n in /*
+ do
+  _l="$(file "$_n")"
+  if [[ "${_l#*directory}" != "$_l" ]]
+   then
+    mkdir "$_i1"/"$_n"
+  fi
+done
+
+for _n in /*
+ do
+  _l="$(file "$_n")"
+  if [[ "${_l#*symbolic link to }" != "$_l" ]]
+   then
+    _l="${_l##*symbolic link to }"
+    _fl="${_l:0:1}"
+    if [[ "$_fl" == "/" ]]
+     then
+      _l="${_l#/}"
+    fi
+    cd "$_i1"
+    ln -s "$_l" "${_n#/}"
+    cd - &> /dev/null
+  fi
+done
+  
+rm -r "$_i1"/Mount* &> /dev/null
+
+echo
+read -n 1 -t 4 -p "Do you want to UPGRADE BASE ROOT BEFORE MERGE ?   :   y(es), ...   :   " _yubr1
+
+case $_yubr1 in
+ y)
+  echo
+  read -p "Please Enter the dist upgrade command   :   " _duc1
+  echo
+  eval "$_duc1"  ;;
+ *)
+  echo  ;;
+esac
+
+echo
+echo "----------------------------------------------------------------"
+echo
+echo "OVERLAY ROOT MERGE"
+echo
+
+PS3="Please Choose OVERLAY Type  :  1, 2  :  "
+select _opt in overlayfs unionfs ; do
+ if [[ -n $_opt ]]
+  then
+   _ot1=$_opt
+   echo "OVERLAY is of $_opt Type"
+   echo
+   break
+  else
+   echo 'Wrong Choice'
+   echo
+ fi
+done
+
+case $_ot1 in
+ overlayfs)
+  for _b in /*
+   do
+    _b1=${_b#*/}
+    _l="$(file "$_b")"
+    if [[ "${_l#*directory}" != "$_l" && ! "$_b1" =~ ^(dev|proc|sys|run|"${_m1#*/}")$ ]]
+     then
+      mkdir "$_i1"/"$_b1" &> /dev/null
+      mkdir "$_i1"/Work_"$_b1" &> /dev/null
+      mkdir "$_i1"/Over_"$_b1" &> /dev/null
+      umount "$_i1"/"$_b1" &> /dev/null
+      mount -t overlay overlay -olowerdir="$_b",upperdir=""$_i1"/Over_"$_b1"",workdir=""$_i1"/Work_"$_b1"" "$_i1"/"$_b1" && \
+      echo "MERGE "$_b" SUCCESS"
+    fi
+  done  ;;
+ unionfs-fuse)
+  for _b in /*
+   do
+    _b1=${_b#*/}
+    _l="$(file "$_b")"
+    if [[ "${_l#*directory}" != "$_l" && ! "$_b1" =~ ^(dev|proc|sys|run|"${_m1#*/}")$ ]]
+     then
+      mkdir "$_i1"/"$_b1" &> /dev/null
+      mkdir "$_i1"/Over_"$_b1" &> /dev/null
+      umount "$_i1"/"$_b1" &> /dev/null
+      unionfs -o cow,max_files=32768 -o allow_other,use_ino,suid,dev,nonempty \
+      ""$_i1"/Over_"$_b1""=RW:"$_b"=RO "$_i1"/"$_b" && \
+      echo "MERGE "$_b" SUCCESS"
+    fi
+  done  ;;
+ *)
+  echo  ;;
+esac
+
+echo
+echo "The CHROOTING into the MERGED System"
+echo
+
+cp /etc/resolv.conf "$_i1"/etc/resolv.conf
+mount -t proc proc "$_i1"/proc/
+mount --rbind /sys "$_i1"/sys/
+mount --rbind /dev "$_i1"/dev/
+mount --rbind /run "$_i1"/run/
+echo
+chroot "$_i1" /bin/bash && echo && echo "CHROOT EXIT SUCCESS"
+echo
+umount --recursive "$_i1"/{dev,proc,run,sys}
+echo
+
+echo
+read -n 1 -t 4 -p "Do you want to UMERGE OVERLAY ROOT Dir ?   :   y(es), ...   :   " _yumo1
+  
+case $_yumo1 in
+ y)
+  echo
+  read -n 1 -t 4 -p "Do you want to clean OVERLAY ROOT /tmp dir ?   :   y(es), ...   :   " _yclotd0
+  echo
+  case $_yclotd0 in
+   y)
+    rm -r "$_i1"/tmp/*  ;;
+   *)
+   echo  ;;
+  esac
+  umount --recursive "$_i1"
+  echo  ;;
+ *)
+  echo  ;;
+esac
+
+echo
+read -n 1 -t 4 -p "Do you to UMOUNT the OVERLAY PARTITION ?   :   y(es), ...   :   " _yuopat
+echo
+case $_yuopat in
+ y)
+  umount --recursive "$_m1"  ;;
+ *)
+ echo  ;;
+esac
+
+echo
+
+exit

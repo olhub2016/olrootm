@@ -1,0 +1,120 @@
+#!/bin/bash
+
+if [[ $(whoami) != "root" ]]
+ then
+  echo
+  echo "This script is to be started WITH SUDO or in the ROOT SHELL"
+  echo
+  exit
+fi
+
+_ydt1=$(date +%Y-%m-%d--%H-%M-%S)
+
+_m1="/Mount_Overlay"
+mkdir "$_m1" 7> /dev/null
+
+echo 
+echo "----------------------------------------------------------------"
+echo
+blkid
+echo
+echo "----------------------------------------------------------------"
+echo
+read -p "Please Enter OVERLAY PARTITION Path ( Press Tabs to complete )   :   " -i "/dev/" -e _wp1
+echo
+
+_fsid0=$( blkid | grep "$_wp1" | grep 'TYPE="btrfs"')
+if [[ "$_fsid0" != "" ]]; then _fsid=1; else _fsid=0; fi
+
+case $_fsid in
+ 1)
+  echo
+  PS3="It is BTRFS : Please Choose Conpression Type   :  1, 2, 3  :  "
+  select _opt in lzo zlib no ; do
+   if [[ -n $_opt ]]; then
+    _ff1=$_opt
+    echo "Compression is of $_opt Type"
+    echo
+    break
+   else
+    echo 'Wrong Choice'
+    echo
+   fi
+  done
+  case $_ff1 in
+   no)
+    mount "$_wp1" "$_m1" && echo && echo "Partition "$_wp1" is Mounted on "$_m1""  ;;
+   *)
+    mount -o compress="$_ff1" "$_wp1" "$_m1" && echo && echo "Partition "$_wp1" is Mounted on "$_m1""  ;;
+  esac  ;;
+ *)
+  mount "$_wp1" "$_m1" && echo && echo "Partition "$_wp1" is Mounted on "$_m1""  ;;
+esac
+
+echo
+echo "----------------------------------------------------------------"
+echo
+echo "List of the {Dirs,Files} in the OVERLAY PARTITION   :"
+echo
+ls "$_m1"
+echo
+echo "----------------------------------------------------------------"
+echo
+read -p "Please Enter OVERLAY ROOT Dir Path ( Press Tabs to complete )   :   " -i "$_m1/" -e _i1
+echo
+
+echo
+echo "Please Enter SQUASHFS Ball Destination Dir Path"
+read -p "It will be created if it be necessary   :   "  -i "/" -e _f1
+echo
+
+mkdir -p "$_f1" &> /dev/null
+
+#  Create SFS Over_* ( without Over_tmp Dir ) ball
+
+echo
+echo "----------------------------------------------------------------"
+echo
+echo "List of {Dirs,Files} in OVERLAY ROOT {Dir,Partition}  :"
+echo
+ls "$_i1"
+echo
+echo "----------------------------------------------------------------"
+echo
+echo "List of the OVERLAY ROOT Dirs INCLUDED into SFS ( All the Over_* excluding Over_tmp )  :"
+echo
+
+for _b in "$_i1"/*
+ do
+  if [[ -d "$_b" && "${_b#*Over_}" != "$_b" && "${_b##*/}" != "Over_tmp" ]]
+   then
+    _du="$( du -hs "$_b" )"
+    _du=${_du%% *}
+    echo "${_b##*/} -" $_du " is included"
+  fi
+done
+
+echo
+echo "----------------------------------------------------------------"
+echo
+read -n 1 -p "Do you want to PROCEED ?   :   y(es), ...   :   " _yprb
+echo
+case $_yprb in
+ y)
+  echo  ;;
+ *)
+  exit ;;
+esac
+
+mksquashfs "$_i1"/Over_* "$_f1"/ROOT-OVERLAY-"${_w1##*/}"-"$_ydt1".sfs -e "$_i1"/Over_tmp && \
+echo && echo "SFS ROOT-OVERLAY-"$_w1"-"$_ydt1".sfs is placed in "$_f1" "
+echo
+
+echo
+umount --recursive "/Mount_Overlay" &> /dev/null
+
+echo "EXIT"
+echo
+
+exit
+

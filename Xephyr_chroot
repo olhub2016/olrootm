@@ -1,0 +1,52 @@
+#!/bin/bash
+
+if [[ $(whoami) == "root" ]]
+ then
+  echo
+  echo "This script is to be started WITHOUT SUDO and in the NON-ROOT SHELL"
+  echo
+  exit
+fi
+ 
+
+echo
+echo "-----------------------------------------------------------------------------"
+echo "As to OVERLAY SFS case , Merge Overlay Dir Path is /dev/shm/Mount_SFS_Overlay"
+echo "-----------------------------------------------------------------------------"
+echo
+
+echo
+read -p "Please Enter Merge Overlay Dir Path ( Press Tabs to complete )   :   " -i "/Mount_Overlay/" -e _i1
+echo
+
+_display=1
+
+Xephyr -br -ac -noreset -screen 1024x768 :"$_display" &
+
+echo
+xhost +local:
+echo
+
+sudo cp /etc/resolv.conf "$_i1"/etc/resolv.conf
+sudo mount -t proc proc "$_i1"/proc/
+sudo mount --rbind /sys "$_i1"/sys/
+sudo mount --rbind /dev "$_i1"/dev/
+sudo mount --rbind /run "$_i1"/run/
+
+echo
+echo "------------------------------------------------"
+echo "In CHROOT enter \"DISPLAY=":$_display" appname\""
+echo "------------------------------------------------"
+echo
+
+echo
+sudo chroot "$_i1" /bin/bash && echo && echo "CHROOT EXIT SUCCESS"
+echo
+
+sudo umount --recursive "$_i1"/{dev,proc,run,sys}
+
+echo
+xhost -local:
+echo
+
+exit

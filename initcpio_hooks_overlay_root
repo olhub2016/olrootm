@@ -1,0 +1,21 @@
+#!/usr/bin/ash
+
+run_latehook() {
+ msg ":: BASE+OVERLAY MERGE"
+ # Create dir wtithin OVERLAY ROOT PARTITION to mount BASE ROOT PARTITION on
+ mkdir /new_root/Base_Mount/ &> /dev/null
+ # Mount BASE ROOT PARTITION on the mountpoint created beforhand within OVERLAY ROOT PARTITION
+ mount /dev/sda2 /new_root/Base_Mount/ 
+ # Mount BOOT partition on the mountpoint within BASE ROOT
+ mount /dev/sda1 /new_root/Base_Mount/boot
+ # Mount HOME,USR,VAR partitions on the mountpoints within BASE ROOT , if necessary
+ mount /dev/sda4 /new_root/Base_Mount/home
+ # Mount the overlays .
+ # Specify paths to the 'Over_"$_i"' and 'Work_"$_i"' dirs belonging to the OVERLAY ROOT you want to merge with .
+ for _i in boot etc home opt root srv tmp var usr 
+  do
+   mount -t overlay overlay -olowerdir=/new_root/Base_Mount/"$_i",upperdir=/new_root/PATH_TO_OVERLAY_ROOT/Over_"$_i",workdir=/new_root/PATH_TO_OVERLAY_ROOT/Work_"$_i" /new_root/"$_i" 
+ done && { rm -r /new_root/var/log/journal/* &> /dev/null ; rm /new_root/var/log/Xorg.*.log &> /dev/null ; rm -r /new_root/tmp/* &> /dev/null ; }
+}
+
+# vim: set ft=sh ts=4 sw=4 et:

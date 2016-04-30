@@ -1,0 +1,67 @@
+#!/bin/bash
+
+if [[ $(whoami) != "root" ]]
+ then
+  echo
+  echo "This script is to be started WITH SUDO or in the ROOT SHELL"
+  echo
+  exit
+fi
+
+_ydt1=$(date +%Y-%m-%d--%H-%M-%S)
+
+echo
+read -p "Please Enter SQUASHFS Ball Destination Dir Path ( It will be created if it is necessary )   :   "  -i "/" -e _f1
+echo
+
+if [[ ! -a "$_f1" ]]
+ then
+  mkdir -p "$_f1"
+fi
+
+#  Create SFS BASE ROOT ball
+
+echo
+echo "List of the BASE ROOT Dirs INCLUDED into SFS ( All but symlinks and {dev,proc,run,sys,tmp} )  :"
+echo
+
+rm /dev/shm/Excl_SFS &> /dev/null
+for _b in /*
+ do
+  _b1=${_b#*/}
+  _l="$(file "$_b")"
+  if [[ "${_l#*directory}" != "$_l" && ! "$_b1" =~ ^(dev|proc|sys|run|tmp)$ ]]
+   then
+    _du="$( du -hs "$_b" )"
+    _du=${_du%% *}
+    echo "${_b##*/} -" $_du " is included"
+   else
+    echo "$_b" >> /dev/shm/Excl_SFS
+  fi
+done
+
+echo
+echo "The Executed command is  :"
+echo
+echo "mksquashfs /* "$_f1"/ROOT-BASE-"$_ydt1".sfs -ef /dev/shm/Excl_SFS"
+echo
+
+echo
+read -n 1 -p "Do you want to PROCEED ?   :   y(es), ...   :   " _yprb
+echo
+case $_yprb in
+ y)
+  echo  ;;
+ *)
+  exit ;;
+esac
+
+mksquashfs /* "$_f1"/ROOT-BASE-"$_ydt1".sfs -ef /dev/shm/Excl_SFS && \
+echo && echo "SFS ROOT-BASE-"$_ydt1".sfs is placed in "$_f1" "
+echo
+
+echo "EXIT"
+echo
+
+exit
+

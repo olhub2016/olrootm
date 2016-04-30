@@ -1,0 +1,3 @@
+
+# Mount OVERLAY ROOT Partition on the root mountpoint :
+  /dev/sda3   /   auto   defaults  0 1

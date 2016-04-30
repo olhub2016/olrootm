@@ -1,0 +1,5 @@
+#!/bin/bash
+
+xinit -- :1 -nolisten tcp vt$XDG_VTNR 
+
+exit
