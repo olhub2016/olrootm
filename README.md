@@ -4,7 +4,6 @@ The {overlayfs,unlonfs} exploiting root merge bash scripts for the {BSD,linux} d
 #A.
 
  This bash script suit is bound to build and sustain the system  
-  subdivided into two parts ( BASE+OVERLAY ) in the terms of time and(or) packages 
    subdivided into two parts ( BASE+OVERLAY ) in the terms of time and(or) packages  
    and put in two different partitions .
 
@@ -108,7 +107,7 @@ The {overlayfs,unlonfs} exploiting root merge bash scripts for the {BSD,linux} d
    5. Edit overlay_etc_fstab file and copy it in the OVERLAY ROOT PARTITION and OVERLAY ROOTs .
          $ nano /PATH_TO/overlay_etc_fstab
   
-      $ sudo cp /PATH_TO/overlay_etc_fstab  /PATH_TO/OVERLAY_ROOT_PARTITION/etc/fstab
+      $ sudo cp /PATH_TO/overlay_etc_fstab  /PATH_TO/OVERLAY_ROOT_PARTITION/etc/fstab  
       $ sudo cp /PATH_TO/overlay_etc_fstab  /PATH_TO/OVERLAY_ROOT_PARTITION/OVERLAY_ROOT/OVER_etc/fstab
 
    6. Reboot .
