@@ -71,11 +71,11 @@ The {overlayfs,unlonfs} exploiting root merge bash scripts for the {BSD,linux} d
       
          $ nano /PATH_TO/Overlay_Hooks/initcpio_hooks_overlay_root
        
-      $ sudo cp /PATH_TO/Overlay_Hooks/initcpio_install_overlay_root /usr/lib/initcpio/install/overlay_root
+        $ sudo cp /PATH_TO/Overlay_Hooks/initcpio_install_overlay_root /usr/lib/initcpio/install/overlay_root
        
-      $ sudo cp /PATH_TO/Overlay_Hooks/sinitcpio_hooks_overlay_root /usr/lib/initcpio/hooks/overlay_root
+        $ sudo cp /PATH_TO/Overlay_Hooks/sinitcpio_hooks_overlay_root /usr/lib/initcpio/hooks/overlay_root
        
-      $ sudo cp /etc/mkinitcpio.conf /etc/mkinitcpio-overlay-fallback.conf
+        $ sudo cp /etc/mkinitcpio.conf /etc/mkinitcpio-overlay-fallback.conf
        
       Edit "MODULES=" line in the mkinitcpio-overlay-fallback.conf file : add "overlay" .
        
@@ -83,7 +83,7 @@ The {overlayfs,unlonfs} exploiting root merge bash scripts for the {BSD,linux} d
        
          $ sudo nano  /etc/mkinitcpio-overlay-fallback.conf
        
-      $ sudo mkinitcpio -c /etc/mkinitcpio-overlay-fallback.conf -g /boot/initramfs-linux-overlay-fallback.img
+         $ sudo mkinitcpio -c /etc/mkinitcpio-overlay-fallback.conf -g /boot/initramfs-linux-overlay-fallback.img
        
      To regenerate initramfs-linux-overlay-fallback.img every time upgrading linux kernel
      edit /etc/mkinitcpio.d/linux.preset file like that :
