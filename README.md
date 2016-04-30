@@ -27,7 +27,7 @@ B.
 
    In the BASE system session , copy Startx+xinitrc into the /Over_root dir of the OVERLAY ROOT
 
-    $ sudo cp /PATH_TO/StartX /PATH_TO/OVERLAY_ROOT/Over_root
+    $ sudo cp /PATH_TO/StartX /PATH_TO/OVERLAY_ROOT/Over_root\
     $ sudo cp /PATH_TO/xinitrc /PATH_TO/OVERLAY_ROOT/Over_root/.xinitrc
 
    Having merged AND chrooted in the other linux tty shell , start new Xorg with the command
