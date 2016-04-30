@@ -73,7 +73,7 @@ D.
        $ sudo cp /PATH_TO/Overlay_Hooks/initcpio_install_overlay_root /usr/lib/initcpio/install/overlay_root
        
        $ sudo cp /PATH_TO/Overlay_Hooks/sinitcpio_hooks_overlay_root /usr/lib/initcpio/hooks/overlay_root
-
+       
        $ sudo cp /etc/mkinitcpio.conf /etc/mkinitcpio-overlay-fallback.conf
        
        Edit "MODULES=" line in the conf file : add "overlay" .
@@ -81,11 +81,14 @@ D.
        Edit "HOOKS=" line in the conf file : add "overlay_root" , remove "autodetect" .
        
        $ sudo nano  /etc/mkinitcpio-overlay-fallback.conf
- 
+       
+       $ sudo mkinitcpio -c /etc/mkinitcpio-overlay-fallback.conf -g /boot/initramfs-linux-overlay-fallback.img
+
+       
       $ sudo mkinitcpio -c /etc/mkinitcpio-overlay-fallback.conf -g /boot/initramfs-linux-overlay-fallback.img
 
      To regenerate initramfs-linux-overlay-fallback.img every time upgrading linux kernel
-     edit /etc/mkinitcpio.d/linux.preset fillike that :
+     edit /etc/mkinitcpio.d/linux.preset fil like that :
      
       \## Change PRESETS line
        PRESETS=('default' 'fallback' 'overlay')
