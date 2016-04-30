@@ -1,6 +1,6 @@
 # olrootm
 The {overlayfs,unlonfs} exploiting  
-ROOT merge bash scripts for the {BSD,Linux} dists .
+ROOT merge bash scripts for the Linux dists .
 
 #A.
 
