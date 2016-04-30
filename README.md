@@ -85,8 +85,8 @@ D.
       $ sudo mkinitcpio -c /etc/mkinitcpio-overlay-fallback.conf -g /boot/initramfs-linux-overlay-fallback.img
 
      To regenerate initramfs-linux-overlay-fallback.img every time upgrading linux kernel
-      edit /etc/mkinitcpio.d/linux.preset file .
-      
+      edit /etc/mkinitcpio.d/linux.preset fillike that :
+     
       ## Change PRESETS line
        PRESETS=('default' 'fallback' 'overlay')
        ## Add these lines to the file
