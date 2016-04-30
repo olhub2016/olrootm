@@ -104,7 +104,8 @@ The {overlayfs,unlonfs} exploiting root merge bash scripts for the {BSD,linux} d
 
    4. Repeat p. 2,3 for every OVERLAY ROOT renaming and editing files coherently .
 
-   5. Edit overlay_etc_fstab file and copy it in the OVERLAY ROOT PARTITION and OVERLAY ROOTs .  
+   5. Edit overlay_etc_fstab file and copy it in the OVERLAY ROOT PARTITION and OVERLAY ROOTs . 
+     
          $ nano /PATH_TO/overlay_etc_fstab
   
       $ sudo cp /PATH_TO/overlay_etc_fstab  /PATH_TO/OVERLAY_ROOT_PARTITION/etc/fstab  
