@@ -37,7 +37,7 @@ The {overlayfs,unlonfs} exploiting root merge bash scripts for the {BSD,Linux} d
          #  sh /root/StartX
 
   2. In the already presented Xorg , 
-     one can start new window for the merged ( but not chrooted ) system  
+     one can start new window for the merged ( but NOT chrooted ) system  
      by Xephyr_chroot script .
 
 #C.
@@ -46,7 +46,7 @@ The {overlayfs,unlonfs} exploiting root merge bash scripts for the {BSD,Linux} d
  doesn't alter in any way the BASE ROOT  
  and leaves all the changes in the OVERLAY ROOT PARTITION .
 
- The scripts "Make_Base(Overlay)_SFS_Snapshot" create Squashfs ball  
+ The scripts "Make_Base(Overlay)_SFS_Snapshot" create SQUASHFS ball  
  out of the pkgs+home+root carring dirs  of the BASE(OVERLAY) ROOT  
  and the "SFS_Base+Overlay(Overlay)_Merge_UMerge" scripts  merge OVERLAY SFS ball  
  with the BASE ROOT SFS ball or BASE ROOT correspondingly by unionfs-fuse  
